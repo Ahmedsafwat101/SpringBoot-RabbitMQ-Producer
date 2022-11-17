@@ -35,4 +35,16 @@ public class Producer {
         producerService.sendToAll(message);
         return ResponseEntity.ok("Message sent successfully");
     }
+
+    @PostMapping("/post-message-topic-a")
+    public ResponseEntity<String> sendToAllQueuesByTopicA(@RequestBody CustomMessage message){
+        producerService.sendToAllByTopic(message,QUEUE_A);
+        return ResponseEntity.ok("Message sent successfully");
+    }
+
+    @PostMapping("/post-message-topic-b")
+    public ResponseEntity<String> sendToAllQueuesByTopicB(@RequestBody CustomMessage message){
+        producerService.sendToAllByTopic(message,QUEUE_B);
+        return ResponseEntity.ok("Message sent successfully");
+    }
 }
