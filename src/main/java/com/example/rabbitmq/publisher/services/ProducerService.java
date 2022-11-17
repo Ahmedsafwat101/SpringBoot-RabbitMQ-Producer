@@ -1,5 +1,4 @@
 package com.example.rabbitmq.publisher.services;
-import com.example.rabbitmq.publisher.exceptions.QueueNotFoundException;
 import com.example.rabbitmq.publisher.models.CustomMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.DirectExchange;
@@ -26,8 +25,7 @@ public class ProducerService {
         } else if(queueName.equals(QUEUE_B)) {
             rabbitTemplate.convertAndSend(exchange.getName(), ROUTING_B, message);
         } else {
-            log.info("Message is sent successfully");
-            throw new QueueNotFoundException("Queue Name isn't found");
+            throw new RuntimeException("Queue Name isn't found");
         }
 
         log.info("Message is sent successfully");
