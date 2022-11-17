@@ -7,5 +7,5 @@ services:
         - "5672:5672"
         - "15672:15672"
 
- # UserName: Guest
- # Password: Guest
+ # UserName: guest
+ # Password: guest
