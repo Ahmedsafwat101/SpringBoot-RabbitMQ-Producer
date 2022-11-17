@@ -29,4 +29,10 @@ public class Producer {
         producerService.send(message,QUEUE_B);
         return ResponseEntity.ok("Message sent successfully");
     }
+
+    @PostMapping("/post-message-all")
+    public ResponseEntity<String> sendToAllQueues(@RequestBody CustomMessage message){
+        producerService.sendToAll(message);
+        return ResponseEntity.ok("Message sent successfully");
+    }
 }

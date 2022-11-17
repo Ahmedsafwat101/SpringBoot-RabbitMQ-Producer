@@ -1,9 +1,6 @@
 package com.example.rabbitmq.publisher.configurations;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
@@ -21,11 +18,16 @@ public class RabbitConfig {
     public static final String QUEUE_A = "queue.A";
     public static final String QUEUE_B = "queue.B";
     public static final String EXCHANGE_DIRECT = "exchange.direct";
+    public static final String EXCHANGE_FANOUT = "exchange.fanout";
+
 
     @Bean
     DirectExchange exchange(){
         return new DirectExchange(EXCHANGE_DIRECT);
     }
+
+    @Bean
+    FanoutExchange fanoutExchange(){return new FanoutExchange(EXCHANGE_FANOUT);}
 
     @Bean
     Queue queueA(){
@@ -41,6 +43,12 @@ public class RabbitConfig {
     }
 
     @Bean
+    Binding bindingForAFanOut(@Qualifier("queueA") Queue queue, FanoutExchange exchange){
+        return BindingBuilder.bind(queue)
+                .to(exchange);
+    }
+
+    @Bean
     Queue queueB(){
         return new Queue(QUEUE_B,false);
     }
@@ -51,6 +59,12 @@ public class RabbitConfig {
                 .to(exchange)
                 .with(ROUTING_B);
 
+    }
+
+    @Bean
+    Binding bindingForBFanout(@Qualifier("queueB") Queue queue, FanoutExchange exchange){
+        return BindingBuilder.bind(queue)
+                .to(exchange);
     }
 
     @Bean
